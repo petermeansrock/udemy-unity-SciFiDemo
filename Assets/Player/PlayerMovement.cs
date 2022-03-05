@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
         var direction = new Vector3(horizontalInput, 0, verticalInput);
         var velocity = speed * direction;
         velocity.y -= gravity * Time.deltaTime;
+        velocity = transform.TransformDirection(velocity);
         characterController.Move(Time.deltaTime * velocity);
     }
 }
