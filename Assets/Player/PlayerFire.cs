@@ -4,6 +4,8 @@ public class PlayerFire : MonoBehaviour
 {
     [SerializeField]
     private GameObject muzzleFlash;
+    [SerializeField]
+    private GameObject hitMarkerPrefab;
 
     private void Update()
     {
@@ -23,11 +25,9 @@ public class PlayerFire : MonoBehaviour
             var ray = Camera.main.ViewportPointToRay(new(0.5f, 0.5f));
             if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
             {
-                Debug.Log($"Raycast hit something: {hitInfo.transform.name}");
-            }
-            else
-            {
-                Debug.Log("Raycast did not hit anything");
+                var normalQuaternion = Quaternion.LookRotation(hitInfo.normal);
+                var hitMarker = Instantiate(hitMarkerPrefab, hitInfo.point, normalQuaternion);
+                Destroy(hitMarker, 1.0f);
             }
         }
     }
