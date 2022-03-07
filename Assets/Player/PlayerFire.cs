@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerFire : MonoBehaviour
@@ -6,22 +7,34 @@ public class PlayerFire : MonoBehaviour
     private GameObject muzzleFlash;
     [SerializeField]
     private GameObject hitMarkerPrefab;
+    [SerializeField]
+    private int maxAmmo = 50;
+    [SerializeField]
+    private int currentAmmo;
+    [SerializeField]
+    private float reloadDelay = 1.5f;
+    [SerializeField]
+    private GameObject weapon;
+
+    private Coroutine reloadRoutine = null;
+
+    private void Start()
+    {
+        currentAmmo = maxAmmo;
+    }
 
     private void Update()
     {
-        // Toggle muzzle flash
-        if (Input.GetMouseButtonDown(0))
+        HandleFire();
+        HandleReload();
+    }
+
+    private void HandleFire()
+    {
+        if (Input.GetMouseButton(0) && currentAmmo > 0)
         {
             muzzleFlash.SetActive(true);
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            muzzleFlash.SetActive(false);
-        }
-
-        // Log raycasts
-        if (Input.GetMouseButton(0))
-        {
+            currentAmmo--;
             var ray = Camera.main.ViewportPointToRay(new(0.5f, 0.5f));
             if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
             {
@@ -30,5 +43,26 @@ public class PlayerFire : MonoBehaviour
                 Destroy(hitMarker, 1.0f);
             }
         }
+        else
+        {
+            muzzleFlash.SetActive(false);
+        }
+    }
+
+    private void HandleReload()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && reloadRoutine == null)
+        {
+            reloadRoutine = StartCoroutine(ReloadRoutine());
+        }
+    }
+
+    private IEnumerator ReloadRoutine()
+    {
+        weapon.SetActive(false);
+        yield return new WaitForSeconds(reloadDelay);
+        weapon.SetActive(true);
+        currentAmmo = maxAmmo;
+        reloadRoutine = null;
     }
 }

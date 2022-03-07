@@ -522,6 +522,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   muzzleFlash: {fileID: 1328611355}
   hitMarkerPrefab: {fileID: 1278410308571632, guid: 0dca392d0ad60af418c1bace1abde0c6, type: 3}
+  maxAmmo: 50
+  currentAmmo: 0
+  reloadDelay: 1.5
+  weapon: {fileID: 2091654222}
 --- !u!1 &732382722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1512,3 +1516,8 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2091654222 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1880188830180300, guid: 88bae2de7f0014e4fa5e93fd72610be7, type: 3}
+  m_PrefabInstance: {fileID: 302067420}
+  m_PrefabAsset: {fileID: 0}
