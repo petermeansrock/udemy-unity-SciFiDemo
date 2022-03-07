@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerFire : MonoBehaviour
 {
@@ -15,12 +16,15 @@ public class PlayerFire : MonoBehaviour
     private float reloadDelay = 1.5f;
     [SerializeField]
     private GameObject weapon;
+    [SerializeField]
+    private UnityEvent<int> ammoUpdatedEvent; 
 
     private Coroutine reloadRoutine = null;
 
     private void Start()
     {
         currentAmmo = maxAmmo;
+        ammoUpdatedEvent.Invoke(currentAmmo);
     }
 
     private void Update()
@@ -35,6 +39,7 @@ public class PlayerFire : MonoBehaviour
         {
             muzzleFlash.SetActive(true);
             currentAmmo--;
+            ammoUpdatedEvent.Invoke(currentAmmo);
             var ray = Camera.main.ViewportPointToRay(new(0.5f, 0.5f));
             if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity))
             {
@@ -63,6 +68,7 @@ public class PlayerFire : MonoBehaviour
         yield return new WaitForSeconds(reloadDelay);
         weapon.SetActive(true);
         currentAmmo = maxAmmo;
+        ammoUpdatedEvent.Invoke(currentAmmo);
         reloadRoutine = null;
     }
 }
