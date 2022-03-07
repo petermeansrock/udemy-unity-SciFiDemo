@@ -1,7 +1,10 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerInteract : MonoBehaviour
 {
+    [SerializeField]
+    private UnityEvent coinCollectedEvent;
     private bool hasCoin = false;
 
     private void OnTriggerStay(Collider other)
@@ -12,6 +15,7 @@ public class PlayerInteract : MonoBehaviour
             if (collectable != null)
             {
                 hasCoin = true;
+                coinCollectedEvent.Invoke();
                 collectable.collect();
             }
         }
