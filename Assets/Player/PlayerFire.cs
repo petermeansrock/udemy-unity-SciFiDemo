@@ -35,7 +35,7 @@ public class PlayerFire : MonoBehaviour
 
     private void HandleFire()
     {
-        if (Input.GetMouseButton(0) && currentAmmo > 0)
+        if (weapon.activeInHierarchy && Input.GetMouseButton(0) && currentAmmo > 0)
         {
             muzzleFlash.SetActive(true);
             currentAmmo--;
@@ -46,6 +46,13 @@ public class PlayerFire : MonoBehaviour
                 var normalQuaternion = Quaternion.LookRotation(hitInfo.normal);
                 var hitMarker = Instantiate(hitMarkerPrefab, hitInfo.point, normalQuaternion);
                 Destroy(hitMarker, 1.0f);
+
+                var targetObject = hitInfo.transform.gameObject;
+                var destructable = targetObject.GetComponent<Destructable>();
+                if (destructable != null)
+                {
+                    destructable.Destruct();
+                }
             }
         }
         else
@@ -56,7 +63,7 @@ public class PlayerFire : MonoBehaviour
 
     private void HandleReload()
     {
-        if (Input.GetKeyDown(KeyCode.R) && reloadRoutine == null)
+        if (weapon.activeInHierarchy && Input.GetKeyDown(KeyCode.R) && reloadRoutine == null)
         {
             reloadRoutine = StartCoroutine(ReloadRoutine());
         }
