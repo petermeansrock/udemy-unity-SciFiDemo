@@ -5,13 +5,8 @@ public class CoinDisplay : MonoBehaviour
     [SerializeField]
     private GameObject coinImage;
 
-    public void DisplayCoin()
+    public void DisplayCoin(bool hasCoin)
     {
-        coinImage.SetActive(true);
-    }
-
-    public void HideCoin()
-    {
-        coinImage.SetActive(false);
+        coinImage.SetActive(hasCoin);
     }
 }
